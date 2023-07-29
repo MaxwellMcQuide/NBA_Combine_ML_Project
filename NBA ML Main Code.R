@@ -1,12 +1,15 @@
 library(dplyr)
 library(readr)
 
-Combine <- read_csv("~/Blog/NBA Combine ML/Draft_Combine.csv") %>%
+Combine_Sheet = "~/Combine_Data.csv"
+Draft_Sheet = "~/Draft_Data.csv"
+
+Combine <- read_csv(Combine_Sheet) %>%
   filter(YEAR != 2022) %>%
   mutate(PLAYER = sub('(.+), (.+)','\\2 \\1',PLAYER)) %>%
   rename(Player = PLAYER, CombineYear = YEAR)
 
-Draft <- read_csv("~/Blog/NBA Combine ML/draft-data-20-years.csv") %>%
+Draft <- read_csv(Draft_Sheet) %>%
   filter(DraftYear >= 2014,DraftYear<=2022) %>%
   select(Player,DraftYear) 
 
@@ -217,5 +220,3 @@ summary(logistic_model)
 
 logistic_Confusion <- confusionMatrix(as.factor(logistic_prediction), as.factor(testSet$Drafted), positive = '1')
 logistic_Confusion
-
-dim(testSet)
